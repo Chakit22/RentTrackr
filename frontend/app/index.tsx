@@ -1,11 +1,5 @@
 import { useState } from "react";
 import { View, TextInput, StyleSheet, Button } from "react-native";
-import { auth } from "../lib/firebaseConfig";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
 
 export default function Index() {
   const [email, setEmail] = useState<string>("");
