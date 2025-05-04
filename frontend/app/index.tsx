@@ -4,13 +4,28 @@ import { auth } from "../lib/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
 export default function Index() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleSubmit = async () => {
+  const handleSignUp = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("user : ", userCredential.user);
+      console.log("User sucessfully signed up!");
+    } catch (error) {
+      console.error("Error :", error);
+    }
+  };
+
+  const handleSignIn = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -18,7 +33,16 @@ export default function Index() {
         password
       );
       console.log("user : ", userCredential.user);
-      console.log("User sucessfully aigend up1");
+      console.log("User sucessfully signed in!");
+    } catch (error) {
+      console.error("Error :", error);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const userCredential = await signOut(auth);
+      console.log("User sucessfully signed out!");
     } catch (error) {
       console.error("Error :", error);
     }
@@ -45,7 +69,9 @@ export default function Index() {
         value={password}
         placeholder="Enter your password..."
       />
-      <Button title="Submit" onPress={handleSubmit} />
+      <Button title="Sign up" onPress={handleSignUp} />
+      <Button title="Sign In" onPress={handleSignIn} />
+      <Button title="Sign Out" onPress={handleSignOut} />
     </View>
   );
 }
