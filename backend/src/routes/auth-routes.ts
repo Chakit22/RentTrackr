@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 const router = Router();
@@ -44,6 +45,7 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, password } = req.body;
+      // const user = await onAuthStateChanged(auth);
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,

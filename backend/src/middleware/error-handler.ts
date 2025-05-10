@@ -32,8 +32,6 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ): void => {
-  console.error(err.stack);
-
   const statusCode = "statusCode" in err ? err.statusCode : 500;
   const message = err.message || "Internal Server Error";
 
