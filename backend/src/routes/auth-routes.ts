@@ -1,10 +1,9 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { auth } from "../config/firebase";
+import { auth, getCurrentUser } from "../config/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
 } from "firebase/auth";
 
 const router = Router();
@@ -44,13 +43,33 @@ router.post(
   "/signin",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      // console.log("signin");
       const { email, password } = req.body;
-      // const user = await onAuthStateChanged(auth);
+
+      // Check if user is already signed in using our centralized auth state
+      const currentUser = getCurrentUser();
+      // console.log("currentUser", currentUser);
+      if (currentUser) {
+        // Redirect to dashboard
+        res.status(200).json({
+          status: "success",
+          message: "User is already signed in",
+          user: currentUser,
+        });
+
+        // console.log("before return");
+        return;
+      }
+
+      // console.log("before signin");
+      // If not signed in, proceed with sign in
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
+      // console.log("after signin");
+
       const user = userCredential.user;
 
       res.status(200).json({

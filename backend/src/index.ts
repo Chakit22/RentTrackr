@@ -2,9 +2,13 @@ import express from "express";
 import cors from "cors";
 import { router } from "./routes/index";
 import { errorHandler } from "./middleware/error-handler";
+import { setupAuthListener } from "./config/firebase";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Initialize Firebase Auth listener
+const authUnsubscribe = setupAuthListener();
 
 // Middleware
 
@@ -30,6 +34,19 @@ app.use(errorHandler);
 // Listens for incoming requests on the specified port.
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+// Clean up the auth listener when the server is terminated
+process.on("SIGINT", () => {
+  console.log("Server shutting down, cleaning up Firebase auth listener...");
+  authUnsubscribe();
+  process.exit(0);
+});
+
+process.on("SIGTERM", () => {
+  console.log("Server shutting down, cleaning up Firebase auth listener...");
+  authUnsubscribe();
+  process.exit(0);
 });
 
 export default app;
