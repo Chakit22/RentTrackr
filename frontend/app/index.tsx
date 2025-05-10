@@ -1,33 +1,54 @@
 import { useState } from "react";
 import { View, TextInput, StyleSheet, Button } from "react-native";
+import axios from "axios";
 
 export default function Index() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  console.log(
+    "process.env.EXPO_PUBLIC_API_URL : ",
+    process.env.EXPO_PUBLIC_API_URL
+  );
 
   const handleSignUp = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/auth/signup`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-      console.log("user : ", userCredential.user);
-      console.log("User sucessfully signed up!");
-    } catch (error) {
-      console.error("Error :", error);
+
+      console.log("response : ", response);
+      // console.log("User sucessfully signed up!");
+    } catch (error: any) {
+      console.error("Error :", error.response.data);
     }
   };
 
   const handleSignIn = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/auth/signin`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-      console.log("user : ", userCredential.user);
-      console.log("User sucessfully signed in!");
+
+      console.log("response : ", response);
+      // console.log("User sucessfully signed in!");
     } catch (error) {
       console.error("Error :", error);
     }
@@ -35,8 +56,13 @@ export default function Index() {
 
   const handleSignOut = async () => {
     try {
-      const userCredential = await signOut(auth);
-      console.log("User sucessfully signed out!");
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/auth/signout`,
+        {}
+      );
+
+      console.log("response : ", response);
+      // console.log("User sucessfully signed out!");
     } catch (error) {
       console.error("Error :", error);
     }
