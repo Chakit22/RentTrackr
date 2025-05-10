@@ -5,15 +5,11 @@ import axios from "axios";
 export default function Index() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  console.log(
-    "process.env.EXPO_PUBLIC_API_URL : ",
-    process.env.EXPO_PUBLIC_API_URL
-  );
 
   const handleSignUp = async () => {
     try {
       const response = await axios.post(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/auth/signup`,
+        `${process.env.EXPO_PUBLIC_BACKEND_URL}/api/auth/signup`,
         {
           email,
           password,
@@ -35,7 +31,7 @@ export default function Index() {
   const handleSignIn = async () => {
     try {
       const response = await axios.post(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/auth/signin`,
+        `${process.env.EXPO_PUBLIC_BACKEND_URL}/api/auth/signin`,
         {
           email,
           password,
@@ -57,7 +53,7 @@ export default function Index() {
   const handleSignOut = async () => {
     try {
       const response = await axios.post(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/auth/signout`,
+        `${process.env.EXPO_PUBLIC_BACKEND_URL}/api/auth/signout`,
         {}
       );
 
